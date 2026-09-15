@@ -1,0 +1,3446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ParatusPay — Digital Finance</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #5b21b6;
+      --primary-dark: #3b0764;
+      --primary-light: #8b5cf6;
+      --purple-bg: #f5f3ff;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --green: #059669;
+      --green-bg: #ecfdf5;
+      --red: #dc2626;
+      --red-bg: #fef2f2;
+      --orange: #d97706;
+      --orange-bg: #fffbeb;
+      --blue: #2563eb;
+      --blue-bg: #eff6ff;
+      --sidebar: #13002a;
+      --sidebar-muted: #a78bba;
+      --shadow: 0 8px 30px rgba(15, 23, 42, .06);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* =========================================================
+       AUTH
+    ========================================================= */
+
+    #authScreen {
+      min-height: 100vh;
+      display: flex;
+      background: #fff;
+    }
+
+    .auth-brand {
+      width: 43%;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 80% 15%, rgba(139, 92, 246, .35), transparent 30%),
+        radial-gradient(circle at 20% 80%, rgba(91, 33, 182, .45), transparent 35%),
+        linear-gradient(145deg, #13002a, #2e1065 65%, #4c1d95);
+      color: white;
+      padding: 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, #a78bfa, #6d28d9);
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 19px;
+      font-weight: 900;
+    }
+
+    .auth-brand-content {
+      max-width: 490px;
+    }
+
+    .auth-brand h1 {
+      font-size: clamp(38px, 4vw, 60px);
+      line-height: 1.05;
+      letter-spacing: -2.5px;
+      margin-bottom: 25px;
+    }
+
+    .auth-brand p {
+      color: #d8cde3;
+      line-height: 1.8;
+      font-size: 16px;
+    }
+
+    .brand-points {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .brand-point {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #eee7f5;
+    }
+
+    .brand-point-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.12);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+    }
+
+    .auth-panel {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      overflow-y: auto;
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 460px;
+    }
+
+    .mobile-logo {
+      display: none;
+      margin-bottom: 35px;
+    }
+
+    .auth-heading {
+      margin-bottom: 30px;
+    }
+
+    .auth-heading h2 {
+      font-size: 31px;
+      letter-spacing: -.8px;
+      margin-bottom: 9px;
+    }
+
+    .auth-heading p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .form-group label {
+      font-size: 13px;
+      font-weight: 650;
+      color: #374151;
+    }
+
+    .input {
+      width: 100%;
+      height: 50px;
+      padding: 0 15px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: white;
+      outline: none;
+      transition: .2s;
+      color: var(--text);
+    }
+
+    .input:focus {
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(139,92,246,.12);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap .input {
+      padding-right: 55px;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+    }
+
+    .primary-btn {
+      border: 0;
+      height: 50px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #7c3aed);
+      color: white;
+      font-weight: 700;
+      transition: .2s;
+      box-shadow: 0 7px 18px rgba(91,33,182,.2);
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(91,33,182,.25);
+    }
+
+    .secondary-btn {
+      height: 46px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 0 18px;
+      font-weight: 650;
+    }
+
+    .secondary-btn:hover {
+      background: #f9fafb;
+    }
+
+    .auth-switch {
+      text-align: center;
+      margin-top: 25px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .auth-switch button {
+      border: 0;
+      background: none;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .demo-note {
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--purple-bg);
+      color: #5b21b6;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       ONBOARDING
+    ========================================================= */
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #9ca3af;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    .step.active {
+      color: var(--primary);
+    }
+
+    .step-number {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
+    }
+
+    .step.active .step-number,
+    .step.completed .step-number {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    .step-line {
+      height: 1px;
+      background: #e5e7eb;
+      flex: 1;
+      margin: 0 10px;
+    }
+
+    .onboarding-step {
+      display: none;
+    }
+
+    .onboarding-step.active {
+      display: block;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 17px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .form-actions .primary-btn {
+      flex: 1;
+    }
+
+    /* =========================================================
+       APP SHELL
+    ========================================================= */
+
+    #app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 255px;
+      background: var(--sidebar);
+      color: white;
+      position: fixed;
+      inset: 0 auto 0 0;
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-top {
+      padding: 25px 20px;
+    }
+
+    .sidebar .logo {
+      padding: 4px 7px 25px;
+    }
+
+    .sidebar .logo-mark {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    }
+
+    .nav-label {
+      color: #7f6a91;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      padding: 18px 12px 9px;
+      text-transform: uppercase;
+    }
+
+    .nav-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      height: 45px;
+      padding: 0 13px;
+      border-radius: 9px;
+      color: var(--sidebar-muted);
+      text-decoration: none;
+      border: 0;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .nav-item:hover {
+      color: white;
+      background: rgba(255,255,255,.07);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(139,92,246,.3), rgba(139,92,246,.12));
+      color: white;
+    }
+
+    .nav-icon {
+      width: 21px;
+      text-align: center;
+      font-size: 15px;
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      padding: 18px 20px 22px;
+    }
+
+    .support-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 15px;
+    }
+
+    .support-card p {
+      color: #a998b7;
+      font-size: 11px;
+      line-height: 1.6;
+      margin: 4px 0 12px;
+    }
+
+    .support-btn {
+      width: 100%;
+      height: 34px;
+      background: rgba(255,255,255,.08);
+      border: 0;
+      border-radius: 7px;
+      color: white;
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .user-mini {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #a78bfa, #6d28d9);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .user-mini-info {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .user-mini-name {
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-mini-email {
+      color: #8d789b;
+      font-size: 10px;
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .main {
+      margin-left: 255px;
+      width: calc(100% - 255px);
+      min-height: 100vh;
+    }
+
+    .topbar {
+      height: 75px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 35px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .mobile-menu {
+      display: none;
+      border: 0;
+      background: none;
+      font-size: 21px;
+    }
+
+    .page-title {
+      font-size: 17px;
+      font-weight: 750;
+    }
+
+    .breadcrumb {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .icon-btn {
+      width: 37px;
+      height: 37px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: white;
+      display: grid;
+      place-items: center;
+      position: relative;
+      color: #4b5563;
+    }
+
+    .notification-dot {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      background: #ef4444;
+      border: 2px solid white;
+      border-radius: 50%;
+      right: 6px;
+      top: 5px;
+    }
+
+    .top-avatar {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 12px;
+      font-weight: 650;
+    }
+
+    /* =========================================================
+       CONTENT
+    ========================================================= */
+
+    .content {
+      padding: 32px 35px 60px;
+      max-width: 1500px;
+    }
+
+    .welcome {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .welcome h1 {
+      font-size: 25px;
+      letter-spacing: -.7px;
+      margin-bottom: 5px;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 10px;
+      border-radius: 20px;
+      background: var(--green-bg);
+      color: var(--green);
+      font-size: 11px;
+      font-weight: 750;
+    }
+
+    /* Balance cards */
+
+    .balance-grid {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .balance-card {
+      border-radius: var(--radius);
+      padding: 23px;
+      background: white;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      min-height: 165px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .balance-card.primary {
+      background:
+        radial-gradient(circle at 100% 0%, rgba(167,139,250,.25), transparent 35%),
+        linear-gradient(135deg, #2e1065, #5b21b6);
+      color: white;
+      border: 0;
+    }
+
+    .card-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .primary .card-label {
+      color: #ddd0ec;
+    }
+
+    .balance {
+      font-size: 31px;
+      font-weight: 800;
+      letter-spacing: -1px;
+      margin-top: 17px;
+    }
+
+    .balance-sub {
+      color: #9ca3af;
+      font-size: 11px;
+      margin-top: 7px;
+    }
+
+    .primary .balance-sub {
+      color: #d6cae3;
+    }
+
+    .eye-btn {
+      background: rgba(255,255,255,.1);
+      border: 0;
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      color: white;
+    }
+
+    .asset-mini {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .asset-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: var(--purple-bg);
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .asset-info {
+      flex: 1;
+    }
+
+    .asset-name {
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .asset-amount {
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 3px;
+    }
+
+    /* Action buttons */
+
+    .actions {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 11px;
+      margin-bottom: 25px;
+    }
+
+    .action-btn {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      height: 75px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #374151;
+      transition: .2s;
+    }
+
+    .action-btn:hover {
+      border-color: #c4b5fd;
+      background: var(--purple-bg);
+      transform: translateY(-2px);
+    }
+
+    .action-icon {
+      width: 29px;
+      height: 29px;
+      display: grid;
+      place-items: center;
+      background: var(--purple-bg);
+      color: var(--primary);
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    /* Main grid */
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel-header {
+      padding: 19px 21px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #f0f0f1;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .panel-link {
+      border: 0;
+      background: none;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* Transactions */
+
+    .transaction {
+      padding: 15px 21px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      border-bottom: 1px solid #f4f4f5;
+    }
+
+    .transaction:last-child {
+      border-bottom: 0;
+    }
+
+    .transaction-icon {
+      width: 39px;
+      height: 39px;
+      border-radius: 11px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .icon-green {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .icon-purple {
+      background: var(--purple-bg);
+      color: var(--primary);
+    }
+
+    .icon-blue {
+      background: var(--blue-bg);
+      color: var(--blue);
+    }
+
+    .transaction-info {
+      flex: 1;
+    }
+
+    .transaction-name {
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .transaction-date {
+      color: #9ca3af;
+      font-size: 10px;
+      margin-top: 4px;
+    }
+
+    .transaction-amount {
+      text-align: right;
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .credit {
+      color: var(--green);
+    }
+
+    .debit {
+      color: #111827;
+    }
+
+    .transaction-status {
+      margin-top: 4px;
+      color: var(--green);
+      font-size: 9px;
+    }
+
+    /* Facility */
+
+    .facility-box {
+      margin: 20px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #f5f3ff, #faf5ff);
+      padding: 18px;
+      border: 1px solid #ede9fe;
+    }
+
+    .facility-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+    .facility-title {
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .facility-number {
+      font-size: 25px;
+      font-weight: 800;
+      color: var(--primary-dark);
+      margin-top: 9px;
+    }
+
+    .facility-caption {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .facility-progress {
+      height: 7px;
+      background: #e9d5ff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 17px 0 9px;
+    }
+
+    .facility-progress span {
+      display: block;
+      width: 34%;
+      height: 100%;
+      background: var(--primary);
+      border-radius: inherit;
+    }
+
+    .facility-footer {
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .account-box {
+      margin: 0 20px 20px;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .account-title {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 650;
+    }
+
+    .account-number {
+      font-size: 18px;
+      letter-spacing: 1px;
+      font-weight: 800;
+      margin: 7px 0 3px;
+    }
+
+    .account-bank {
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .copy-btn {
+      margin-top: 12px;
+      border: 0;
+      background: var(--purple-bg);
+      color: var(--primary);
+      border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       MODALS
+    ========================================================= */
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .55);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      padding: 20px;
+    }
+
+    .modal {
+      width: 100%;
+      max-width: 500px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 25px 70px rgba(0,0,0,.2);
+      overflow: hidden;
+      animation: modalIn .2s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 21px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 800;
+    }
+
+    .modal-close {
+      border: 0;
+      background: #f3f4f6;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+
+    .modal-body {
+      padding: 23px;
+    }
+
+    .modal-footer {
+      padding: 17px 23px;
+      background: #fafafa;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .quote-card {
+      padding: 16px;
+      border-radius: 12px;
+      background: var(--purple-bg);
+      border: 1px solid #ede9fe;
+      margin: 17px 0;
+    }
+
+    .quote-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 6px 0;
+    }
+
+    .quote-row.total {
+      border-top: 1px solid #ddd6fe;
+      margin-top: 6px;
+      padding-top: 12px;
+      font-weight: 800;
+    }
+
+    /* =========================================================
+       OTHER PAGES
+    ========================================================= */
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .section-heading {
+      margin-bottom: 25px;
+    }
+
+    .section-heading h2 {
+      font-size: 23px;
+      letter-spacing: -.6px;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .empty-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 55px;
+      height: 55px;
+      background: var(--purple-bg);
+      color: var(--primary);
+      border-radius: 15px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 15px;
+      font-size: 20px;
+    }
+
+    .empty-card h3 {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .empty-card p {
+      color: var(--muted);
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .table-card {
+      overflow-x: auto;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 650px;
+    }
+
+    th,
+    td {
+      padding: 15px 18px;
+      text-align: left;
+      border-bottom: 1px solid #f0f0f1;
+      font-size: 11px;
+    }
+
+    th {
+      color: var(--muted);
+      font-weight: 700;
+      background: #fafafa;
+    }
+
+    td {
+      font-weight: 550;
+    }
+
+    .status {
+      display: inline-flex;
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 750;
+    }
+
+    .status.completed {
+      background: var(--green-bg);
+      color: var(--green);
+    }
+
+    .status.pending {
+      background: var(--orange-bg);
+      color: var(--orange);
+    }
+
+    .status.failed {
+      background: var(--red-bg);
+      color: var(--red);
+    }
+
+    .settings-card {
+      max-width: 750px;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 25px;
+    }
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @media (max-width: 1100px) {
+      .balance-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .balance-card.primary {
+        grid-column: 1 / -1;
+      }
+
+      .actions {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .auth-brand {
+        display: none;
+      }
+
+      .auth-panel {
+        padding: 25px;
+      }
+
+      .mobile-logo {
+        display: flex;
+      }
+
+      .sidebar {
+        transform: translateX(-100%);
+        transition: .25s;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .content {
+        padding: 23px 18px 45px;
+      }
+
+      .top-avatar span {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .full {
+        grid-column: auto;
+      }
+
+      .balance-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .balance-card.primary {
+        grid-column: auto;
+      }
+
+      .actions {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .welcome {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .topbar-actions {
+        gap: 8px;
+      }
+
+      .page-title {
+        font-size: 14px;
+      }
+
+      .breadcrumb {
+        display: none;
+      }
+
+      .auth-heading h2 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================================================
+     AUTHENTICATION / ONBOARDING
+============================================================= -->
+
+<section id="authScreen">
+
+  <div class="auth-brand">
+
+    <div class="logo">
+      <div class="logo-mark">P</div>
+      PARATUSPAY
+    </div>
+
+    <div class="auth-brand-content">
+      <h1>Your money.<br>One platform.</h1>
+
+      <p>
+        Manage your NGN balance, digital assets, facilities and
+        payments from one secure financial platform.
+      </p>
+
+      <div class="brand-points">
+        <div class="brand-point">
+          <div class="brand-point-icon">✓</div>
+          Secure digital finance
+        </div>
+
+        <div class="brand-point">
+          <div class="brand-point-icon">✓</div>
+          NGN & digital asset management
+        </div>
+
+        <div class="brand-point">
+          <div class="brand-point-icon">✓</div>
+          Fast, simple and transparent
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:11px;color:#9f8caf;">
+      © 2026 ParatusPay by Paratus-Digi
+    </div>
+
+  </div>
+
+
+  <div class="auth-panel">
+
+    <div class="auth-container">
+
+      <div class="mobile-logo logo">
+        <div class="logo-mark">P</div>
+        PARATUSPAY
+      </div>
+
+
+      <!-- LOGIN -->
+
+      <div id="loginForm">
+
+        <div class="auth-heading">
+          <h2>Welcome back</h2>
+          <p>Sign in to access your ParatusPay account.</p>
+        </div>
+
+        <div class="auth-form">
+
+          <div class="form-group">
+            <label>Email address</label>
+            <input
+              id="loginEmail"
+              class="input"
+              type="email"
+              placeholder="you@example.com"
+              value="john@example.com"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Password</label>
+
+            <div class="password-wrap">
+              <input
+                id="loginPassword"
+                class="input"
+                type="password"
+                placeholder="Enter your password"
+                value="password"
+              />
+
+              <button
+                class="password-toggle"
+                onclick="togglePassword('loginPassword')"
+              >Show</button>
+            </div>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;">
+            <label style="display:flex;gap:7px;align-items:center;color:#6b7280;">
+              <input type="checkbox" checked />
+              Remember me
+            </label>
+
+            <button
+              style="border:0;background:none;color:#5b21b6;font-weight:700;font-size:12px;"
+            >
+              Forgot password?
+            </button>
+          </div>
+
+          <button class="primary-btn" onclick="login()">
+            Sign in
+          </button>
+
+          <div class="demo-note">
+            <strong>Demo mode:</strong>
+            Use any email and password to enter the simulated dashboard.
+          </div>
+
+        </div>
+
+        <div class="auth-switch">
+          Don't have an account?
+          <button onclick="showRegister()">Create account</button>
+        </div>
+
+      </div>
+
+
+      <!-- ONBOARDING -->
+
+      <div id="registerForm" class="hidden">
+
+        <div class="auth-heading">
+          <h2>Create your account</h2>
+          <p>Complete your details to start using ParatusPay.</p>
+        </div>
+
+
+        <div class="stepper">
+
+          <div id="stepIndicator1" class="step active">
+            <div class="step-number">1</div>
+            Personal
+          </div>
+
+          <div class="step-line"></div>
+
+          <div id="stepIndicator2" class="step">
+            <div class="step-number">2</div>
+            Verify
+          </div>
+
+          <div class="step-line"></div>
+
+          <div id="stepIndicator3" class="step">
+            <div class="step-number">3</div>
+            Complete
+          </div>
+
+        </div>
+
+
+        <!-- STEP 1 -->
+
+        <div id="onboardingStep1" class="onboarding-step active">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>First name</label>
+              <input
+                id="firstName"
+                class="input"
+                placeholder="John"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Last name</label>
+              <input
+                id="lastName"
+                class="input"
+                placeholder="Doe"
+              />
+            </div>
+
+            <div class="form-group full">
+              <label>Email address</label>
+              <input
+                id="registerEmail"
+                class="input"
+                type="email"
+                placeholder="john@example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Phone number</label>
+              <input
+                id="phone"
+                class="input"
+                placeholder="+234 800 000 0000"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Date of birth</label>
+              <input
+                class="input"
+                type="date"
+              />
+            </div>
+
+            <div class="form-group full">
+              <label>Password</label>
+              <input
+                id="registerPassword"
+                class="input"
+                type="password"
+                placeholder="Create a strong password"
+              />
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+            <button
+              class="primary-btn"
+              onclick="nextOnboardingStep(2)"
+            >
+              Continue
+            </button>
+          </div>
+
+        </div>
+
+
+        <!-- STEP 2 -->
+
+        <div id="onboardingStep2" class="onboarding-step">
+
+          <div class="demo-note" style="margin-bottom:18px;">
+            <strong>Simulated KYC:</strong>
+            In the production system this stage would communicate
+            with BVN/NIN and identity verification providers.
+          </div>
+
+          <div class="form-grid">
+
+            <div class="form-group full">
+              <label>BVN</label>
+              <input
+                id="bvn"
+                class="input"
+                maxlength="11"
+                placeholder="Enter 11-digit BVN"
+              />
+            </div>
+
+            <div class="form-group full">
+              <label>NIN</label>
+              <input
+                id="nin"
+                class="input"
+                maxlength="11"
+                placeholder="Enter 11-digit NIN"
+              />
+            </div>
+
+            <div class="form-group full">
+              <label>Residential address</label>
+              <input
+                class="input"
+                placeholder="Enter your address"
+              />
+            </div>
+
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              class="secondary-btn"
+              onclick="nextOnboardingStep(1)"
+            >
+              Back
+            </button>
+
+            <button
+              class="primary-btn"
+              onclick="nextOnboardingStep(3)"
+            >
+              Verify identity
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- STEP 3 -->
+
+        <div id="onboardingStep3" class="onboarding-step">
+
+          <div style="text-align:center;padding:10px 0 20px;">
+
+            <div
+              style="
+                width:64px;
+                height:64px;
+                border-radius:50%;
+                background:#ecfdf5;
+                color:#059669;
+                display:grid;
+                place-items:center;
+                margin:0 auto 18px;
+                font-size:25px;
+              "
+            >
+              ✓
+            </div>
+
+            <h3 style="font-size:20px;margin-bottom:8px;">
+              Identity verified
+            </h3>
+
+            <p style="color:#6b7280;font-size:12px;line-height:1.7;">
+              Your simulated KYC checks have been completed
+              successfully. Your ParatusPay account is ready.
+            </p>
+
+          </div>
+
+          <div class="demo-note">
+            A simulated NGN virtual account will be created
+            automatically when you enter the dashboard.
+          </div>
+
+          <div class="form-actions">
+
+            <button
+              class="secondary-btn"
+              onclick="nextOnboardingStep(2)"
+            >
+              Back
+            </button>
+
+            <button
+              class="primary-btn"
+              onclick="completeRegistration()"
+            >
+              Enter ParatusPay
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="auth-switch">
+          Already have an account?
+          <button onclick="showLogin()">Sign in</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ============================================================
+     MAIN APPLICATION
+============================================================= -->
+
+<section id="app" class="hidden">
+
+  <!-- SIDEBAR -->
+
+  <aside id="sidebar" class="sidebar">
+
+    <div class="sidebar-top">
+
+      <div class="logo">
+        <div class="logo-mark">P</div>
+        PARATUSPAY
+      </div>
+
+      <div class="nav-label">Overview</div>
+
+      <nav class="nav-menu">
+
+        <button
+          class="nav-item active"
+          data-page="dashboard"
+          onclick="navigate('dashboard')"
+        >
+          <span class="nav-icon">⌂</span>
+          Dashboard
+        </button>
+
+        <button
+          class="nav-item"
+          data-page="transactions"
+          onclick="navigate('transactions')"
+        >
+          <span class="nav-icon">↕</span>
+          Transactions
+        </button>
+
+        <button
+          class="nav-item"
+          data-page="assets"
+          onclick="navigate('assets')"
+        >
+          <span class="nav-icon">◆</span>
+          Digital Assets
+        </button>
+
+      </nav>
+
+
+      <div class="nav-label">Services</div>
+
+      <nav class="nav-menu">
+
+        <button
+          class="nav-item"
+          data-page="facility"
+          onclick="navigate('facility')"
+        >
+          <span class="nav-icon">▣</span>
+          Facility
+        </button>
+
+        <button
+          class="nav-item"
+          data-page="bank"
+          onclick="navigate('bank')"
+        >
+          <span class="nav-icon">▤</span>
+          NGN Account
+        </button>
+
+        <button
+          class="nav-item"
+          data-page="payments"
+          onclick="navigate('payments')"
+        >
+          <span class="nav-icon">⇄</span>
+          Payments
+        </button>
+
+      </nav>
+
+
+      <div class="nav-label">Account</div>
+
+      <nav class="nav-menu">
+
+        <button
+          class="nav-item"
+          data-page="profile"
+          onclick="navigate('profile')"
+        >
+          <span class="nav-icon">●</span>
+          Profile
+        </button>
+
+        <button
+          class="nav-item"
+          data-page="settings"
+          onclick="navigate('settings')"
+        >
+          <span class="nav-icon">⚙</span>
+          Settings
+        </button>
+
+      </nav>
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+      <div class="support-card">
+
+        <strong style="font-size:12px;">
+          Need help?
+        </strong>
+
+        <p>
+          Our support team is available to help with your account.
+        </p>
+
+        <button class="support-btn">
+          Contact support
+        </button>
+
+      </div>
+
+      <div class="user-mini">
+
+        <div class="avatar" id="sidebarAvatar">JD</div>
+
+        <div class="user-mini-info">
+
+          <div class="user-mini-name" id="sidebarName">
+            John Doe
+          </div>
+
+          <div class="user-mini-email" id="sidebarEmail">
+            john@example.com
+          </div>
+
+        </div>
+
+        <button
+          onclick="logout()"
+          style="
+            background:none;
+            border:0;
+            color:#a78bba;
+            font-size:14px;
+          "
+        >
+          ↪
+        </button>
+
+      </div>
+
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN -->
+
+  <main class="main">
+
+    <!-- TOP NAV -->
+
+    <header class="topbar">
+
+      <div class="topbar-left">
+
+        <button
+          class="mobile-menu"
+          onclick="toggleSidebar()"
+        >
+          ☰
+        </button>
+
+        <div>
+
+          <div id="pageTitle" class="page-title">
+            Dashboard
+          </div>
+
+          <div class="breadcrumb">
+            Home / Dashboard
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="topbar-actions">
+
+        <button class="icon-btn">
+          ◔
+          <span class="notification-dot"></span>
+        </button>
+
+        <div class="top-avatar">
+
+          <div class="avatar" id="topAvatar">
+            JD
+          </div>
+
+          <span id="topName">
+            John Doe
+          </span>
+
+        </div>
+
+      </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+      <!-- ======================================================
+           DASHBOARD
+      ======================================================= -->
+
+      <div id="page-dashboard" class="page active">
+
+        <div class="welcome">
+
+          <div>
+
+            <h1>
+              Good afternoon, <span id="welcomeName">John</span>
+            </h1>
+
+            <p>
+              Here's what's happening with your ParatusPay account.
+            </p>
+
+          </div>
+
+          <div class="verified-badge">
+            ✓ Account verified
+          </div>
+
+        </div>
+
+
+        <!-- BALANCES -->
+
+        <div class="balance-grid">
+
+          <div class="balance-card primary">
+
+            <div class="card-label">
+
+              <span>NGN AVAILABLE BALANCE</span>
+
+              <button
+                class="eye-btn"
+                onclick="toggleBalance()"
+              >
+                ◉
+              </button>
+
+            </div>
+
+            <div id="mainBalance" class="balance">
+              ₦1,250,000.00
+            </div>
+
+            <div class="balance-sub">
+              Available for payments and transactions
+            </div>
+
+          </div>
+
+
+          <div class="balance-card">
+
+            <div class="card-label">
+              <span>DIGITAL ASSETS</span>
+              <span>↗</span>
+            </div>
+
+            <div class="asset-mini">
+
+              <div class="asset-icon">₿</div>
+
+              <div class="asset-info">
+                <div class="asset-name">BTC</div>
+                <div class="asset-amount">
+                  0.025 BTC
+                </div>
+              </div>
+
+              <strong style="font-size:12px;">
+                ₦2.18m
+              </strong>
+
+            </div>
+
+            <div class="asset-mini">
+
+              <div class="asset-icon">Ξ</div>
+
+              <div class="asset-info">
+                <div class="asset-name">ETH</div>
+                <div class="asset-amount">
+                  0.40 ETH
+                </div>
+              </div>
+
+              <strong style="font-size:12px;">
+                ₦1.15m
+              </strong>
+
+            </div>
+
+          </div>
+
+
+          <div class="balance-card">
+
+            <div class="card-label">
+              <span>FACILITY</span>
+              <span style="color:#059669;">ACTIVE</span>
+            </div>
+
+            <div class="balance">
+              ₦500K
+            </div>
+
+            <div class="balance-sub">
+              Available facility
+            </div>
+
+            <button
+              class="copy-btn"
+              onclick="openModal('facilityModal')"
+            >
+              View facility
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="actions">
+
+          <button
+            class="action-btn"
+            onclick="openTrade('buy')"
+          >
+            <span class="action-icon">+</span>
+            Buy
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="openTrade('sell')"
+          >
+            <span class="action-icon">−</span>
+            Sell
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="openTrade('convert')"
+          >
+            <span class="action-icon">⇄</span>
+            Convert
+          </button>
+
+          <button class="action-btn">
+            <span class="action-icon">↑</span>
+            Send
+          </button>
+
+          <button class="action-btn">
+            <span class="action-icon">↓</span>
+            Receive
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="openModal('facilityModal')"
+          >
+            <span class="action-icon">₦</span>
+            Get Facility
+          </button>
+
+        </div>
+
+
+        <!-- LOWER GRID -->
+
+        <div class="dashboard-grid">
+
+
+          <!-- TRANSACTIONS -->
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+                Recent activity
+              </div>
+
+              <button
+                class="panel-link"
+                onclick="navigate('transactions')"
+              >
+                View all
+              </button>
+
+            </div>
+
+
+            <div class="transaction">
+
+              <div class="transaction-icon icon-purple">
+                ₿
+              </div>
+
+              <div class="transaction-info">
+
+                <div class="transaction-name">
+                  Buy BTC
+                </div>
+
+                <div class="transaction-date">
+                  Today · 10:42 AM
+                </div>
+
+              </div>
+
+              <div class="transaction-amount">
+                <div class="debit">
+                  −₦100,000
+                </div>
+
+                <div class="transaction-status">
+                  Completed
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="transaction">
+
+              <div class="transaction-icon icon-green">
+                ₦
+              </div>
+
+              <div class="transaction-info">
+
+                <div class="transaction-name">
+                  NGN Funding
+                </div>
+
+                <div class="transaction-date">
+                  Yesterday · 3:12 PM
+                </div>
+
+              </div>
+
+              <div class="transaction-amount">
+                <div class="credit">
+                  +₦250,000
+                </div>
+
+                <div class="transaction-status">
+                  Completed
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="transaction">
+
+              <div class="transaction-icon icon-blue">
+                ◆
+              </div>
+
+              <div class="transaction-info">
+
+                <div class="transaction-name">
+                  Sell USDT
+                </div>
+
+                <div class="transaction-date">
+                  Sep 2 · 1:30 PM
+                </div>
+
+              </div>
+
+              <div class="transaction-amount">
+                <div class="credit">
+                  +₦50,000
+                </div>
+
+                <div class="transaction-status">
+                  Completed
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="transaction">
+
+              <div class="transaction-icon icon-purple">
+                ₦
+              </div>
+
+              <div class="transaction-info">
+
+                <div class="transaction-name">
+                  Facility repayment
+                </div>
+
+                <div class="transaction-date">
+                  Sep 1 · 9:20 AM
+                </div>
+
+              </div>
+
+              <div class="transaction-amount">
+                <div class="debit">
+                  −₦80,000
+                </div>
+
+                <div class="transaction-status">
+                  Completed
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- RIGHT -->
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+                Your NGN account
+              </div>
+
+              <span
+                class="status completed"
+              >
+                ACTIVE
+              </span>
+
+            </div>
+
+
+            <div class="account-box">
+
+              <div class="account-title">
+                ACCOUNT NAME
+              </div>
+
+              <div class="account-number">
+                JOHN DOE
+              </div>
+
+              <div class="account-bank">
+                ParatusPay Demo Bank
+              </div>
+
+              <div
+                class="account-title"
+                style="margin-top:15px;"
+              >
+                ACCOUNT NUMBER
+              </div>
+
+              <div class="account-number">
+                0123456789
+              </div>
+
+              <div class="account-bank">
+                NGN · Virtual Account
+              </div>
+
+              <button
+                class="copy-btn"
+                onclick="copyAccount()"
+              >
+                COPY ACCOUNT NUMBER
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           TRANSACTIONS
+      ======================================================= -->
+
+      <div id="page-transactions" class="page">
+
+        <div class="section-heading">
+
+          <h2>Transactions</h2>
+
+          <p>
+            View and manage your ParatusPay transaction history.
+          </p>
+
+        </div>
+
+        <div class="table-card">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>Transaction</th>
+                <th>Reference</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              <tr>
+                <td>Buy BTC</td>
+                <td>PP-20260904-000001</td>
+                <td>−₦100,000</td>
+                <td>Sep 4, 2026</td>
+                <td><span class="status completed">Completed</span></td>
+              </tr>
+
+              <tr>
+                <td>NGN Funding</td>
+                <td>PP-20260903-000002</td>
+                <td>+₦250,000</td>
+                <td>Sep 3, 2026</td>
+                <td><span class="status completed">Completed</span></td>
+              </tr>
+
+              <tr>
+                <td>Sell USDT</td>
+                <td>PP-20260902-000003</td>
+                <td>+₦50,000</td>
+                <td>Sep 2, 2026</td>
+                <td><span class="status completed">Completed</span></td>
+              </tr>
+
+              <tr>
+                <td>Facility</td>
+                <td>PP-20260901-000004</td>
+                <td>+₦200,000</td>
+                <td>Sep 1, 2026</td>
+                <td><span class="status pending">Pending</span></td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           ASSETS
+      ======================================================= -->
+
+      <div id="page-assets" class="page">
+
+        <div class="section-heading">
+
+          <h2>Digital Assets</h2>
+
+          <p>
+            Manage your simulated digital asset portfolio.
+          </p>
+
+        </div>
+
+        <div class="balance-grid">
+
+          <div class="balance-card">
+            <div class="card-label">
+              BTC
+            </div>
+            <div class="balance">0.025 BTC</div>
+            <div class="balance-sub">≈ ₦2,180,000</div>
+          </div>
+
+          <div class="balance-card">
+            <div class="card-label">
+              ETH
+            </div>
+            <div class="balance">0.40 ETH</div>
+            <div class="balance-sub">≈ ₦1,150,000</div>
+          </div>
+
+          <div class="balance-card">
+            <div class="card-label">
+              USDT
+            </div>
+            <div class="balance">1,500 USDT</div>
+            <div class="balance-sub">≈ ₦2,250,000</div>
+          </div>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="action-btn"
+            onclick="openTrade('buy')"
+          >
+            <span class="action-icon">+</span>
+            Buy
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="openTrade('sell')"
+          >
+            <span class="action-icon">−</span>
+            Sell
+          </button>
+
+          <button
+            class="action-btn"
+            onclick="openTrade('convert')"
+          >
+            <span class="action-icon">⇄</span>
+            Convert
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           FACILITY
+      ======================================================= -->
+
+      <div id="page-facility" class="page">
+
+        <div class="section-heading">
+
+          <h2>Facility</h2>
+
+          <p>
+            Manage your ParatusPay facility.
+          </p>
+
+        </div>
+
+        <div class="panel">
+
+          <div class="facility-box">
+
+            <div class="facility-top">
+
+              <div>
+                <div class="facility-title">
+                  Available facility
+                </div>
+
+                <div class="facility-number">
+                  ₦500,000
+                </div>
+
+                <div class="facility-caption">
+                  of ₦1,500,000 limit
+                </div>
+              </div>
+
+              <span class="status completed">
+                ACTIVE
+              </span>
+
+            </div>
+
+            <div class="facility-progress">
+              <span></span>
+            </div>
+
+            <div class="facility-footer">
+              <span>₦1,000,000 available</span>
+              <span>33% used</span>
+            </div>
+
+          </div>
+
+          <div style="padding:0 20px 20px;">
+
+            <button
+              class="primary-btn"
+              style="padding:0 20px;"
+              onclick="openModal('facilityModal')"
+            >
+              Apply for Facility
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           BANK
+      ======================================================= -->
+
+      <div id="page-bank" class="page">
+
+        <div class="section-heading">
+
+          <h2>NGN Account</h2>
+
+          <p>
+            Your ParatusPay virtual NGN account.
+          </p>
+
+        </div>
+
+        <div class="panel" style="max-width:650px;">
+
+          <div class="panel-header">
+            <div class="panel-title">
+              Virtual account
+            </div>
+
+            <span class="status completed">
+              ACTIVE
+            </span>
+          </div>
+
+          <div class="account-box" style="border:0;">
+
+            <div class="account-title">
+              ACCOUNT NAME
+            </div>
+
+            <div class="account-number">
+              JOHN DOE
+            </div>
+
+            <div class="account-bank">
+              ParatusPay Demo Bank
+            </div>
+
+            <div class="account-title" style="margin-top:25px;">
+              ACCOUNT NUMBER
+            </div>
+
+            <div class="account-number">
+              0123456789
+            </div>
+
+            <div class="account-bank">
+              NGN
+            </div>
+
+            <button
+              class="copy-btn"
+              onclick="copyAccount()"
+            >
+              COPY ACCOUNT NUMBER
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           PAYMENTS
+      ======================================================= -->
+
+      <div id="page-payments" class="page">
+
+        <div class="section-heading">
+
+          <h2>Payments</h2>
+
+          <p>
+            Send and receive simulated NGN payments.
+          </p>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="action-btn">
+            <span class="action-icon">↑</span>
+            Send Money
+          </button>
+
+          <button class="action-btn">
+            <span class="action-icon">↓</span>
+            Receive Money
+          </button>
+
+          <button class="action-btn">
+            <span class="action-icon">▣</span>
+            Payment History
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           PROFILE
+      ======================================================= -->
+
+      <div id="page-profile" class="page">
+
+        <div class="section-heading">
+
+          <h2>Profile</h2>
+
+          <p>
+            Your verified ParatusPay customer information.
+          </p>
+
+        </div>
+
+        <div class="settings-card">
+
+          <div class="form-grid">
+
+            <div class="form-group">
+              <label>First name</label>
+              <input
+                id="profileFirstName"
+                class="input"
+                value="John"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Last name</label>
+              <input
+                id="profileLastName"
+                class="input"
+                value="Doe"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Email</label>
+              <input
+                class="input"
+                value="john@example.com"
+              />
+            </div>
+
+            <div class="form-group">
+              <label>Phone</label>
+              <input
+                class="input"
+                value="+234 800 000 0000"
+              />
+            </div>
+
+          </div>
+
+          <button
+            class="primary-btn"
+            style="padding:0 25px;margin-top:20px;"
+          >
+            Save changes
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- ======================================================
+           SETTINGS
+      ======================================================= -->
+
+      <div id="page-settings" class="page">
+
+        <div class="section-heading">
+
+          <h2>Settings</h2>
+
+          <p>
+            Manage your account preferences.
+          </p>
+
+        </div>
+
+        <div class="settings-card">
+
+          <div style="padding:16px 0;border-bottom:1px solid #eee;">
+            <strong style="font-size:13px;">
+              Security
+            </strong>
+
+            <p style="color:#6b7280;font-size:11px;margin-top:5px;">
+              Two-factor authentication and account security.
+            </p>
+          </div>
+
+          <div style="padding:16px 0;border-bottom:1px solid #eee;">
+            <strong style="font-size:13px;">
+              Notifications
+            </strong>
+
+            <p style="color:#6b7280;font-size:11px;margin-top:5px;">
+              Email and transaction notifications.
+            </p>
+          </div>
+
+          <div style="padding:16px 0;">
+            <strong style="font-size:13px;">
+              Session
+            </strong>
+
+            <p style="color:#6b7280;font-size:11px;margin-top:5px;">
+              Manage active sessions and logout.
+            </p>
+
+            <button
+              class="secondary-btn"
+              style="margin-top:12px;"
+              onclick="logout()"
+            >
+              Logout
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+
+    </div>
+
+  </main>
+
+</section>
+
+
+<!-- ============================================================
+     TRADE MODAL
+============================================================= -->
+
+<div id="tradeModal" class="modal-overlay hidden">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div id="tradeTitle" class="modal-title">
+        Buy Digital Asset
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('tradeModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="form-group">
+
+        <label>Asset</label>
+
+        <select
+          id="tradeAsset"
+          class="input"
+          onchange="updateQuote()"
+        >
+          <option value="BTC">Bitcoin (BTC)</option>
+          <option value="ETH">Ethereum (ETH)</option>
+          <option value="USDT">Tether (USDT)</option>
+        </select>
+
+      </div>
+
+
+      <div class="form-group" style="margin-top:16px;">
+
+        <label id="tradeAmountLabel">
+          NGN Amount
+        </label>
+
+        <input
+          id="tradeAmount"
+          class="input"
+          type="number"
+          value="100000"
+          oninput="updateQuote()"
+        />
+
+      </div>
+
+
+      <div class="quote-card">
+
+        <div class="quote-row">
+          <span>Asset price</span>
+          <strong id="quotePrice">
+            ₦100,000
+          </strong>
+        </div>
+
+        <div class="quote-row">
+          <span>Estimated quantity</span>
+          <strong id="quoteQuantity">
+            0.001 BTC
+          </strong>
+        </div>
+
+        <div class="quote-row">
+          <span>ParatusPay fee</span>
+          <strong id="quoteFee">
+            ₦1,000
+          </strong>
+        </div>
+
+        <div class="quote-row total">
+          <span>Total</span>
+          <strong id="quoteTotal">
+            ₦101,000
+          </strong>
+        </div>
+
+      </div>
+
+
+      <div class="demo-note">
+        Demo transaction — no real funds or digital assets
+        will be transferred.
+      </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+
+      <button
+        class="secondary-btn"
+        onclick="closeModal('tradeModal')"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary-btn"
+        style="padding:0 22px;"
+        onclick="executeTrade()"
+      >
+        Confirm transaction
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     FACILITY MODAL
+============================================================= -->
+
+<div id="facilityModal" class="modal-overlay hidden">
+
+  <div class="modal">
+
+    <div class="modal-header">
+
+      <div class="modal-title">
+        Apply for Facility
+      </div>
+
+      <button
+        class="modal-close"
+        onclick="closeModal('facilityModal')"
+      >
+        ×
+      </button>
+
+    </div>
+
+    <div class="modal-body">
+
+      <div class="demo-note" style="margin-bottom:18px;">
+        This is a simulated facility application.
+        Eligibility checks are simulated for the demo.
+      </div>
+
+      <div class="form-group">
+
+        <label>Facility amount</label>
+
+        <input
+          id="facilityAmount"
+          class="input"
+          type="number"
+          value="500000"
+        />
+
+      </div>
+
+      <div class="quote-card">
+
+        <div class="quote-row">
+          <span>Requested amount</span>
+          <strong>₦500,000</strong>
+        </div>
+
+        <div class="quote-row">
+          <span>Monthly rate</span>
+          <strong>10%</strong>
+        </div>
+
+        <div class="quote-row">
+          <span>Tenor</span>
+          <strong>30 days</strong>
+        </div>
+
+        <div class="quote-row total">
+          <span>Estimated repayment</span>
+          <strong>₦550,000</strong>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+      <button
+        class="secondary-btn"
+        onclick="closeModal('facilityModal')"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="primary-btn"
+        style="padding:0 22px;"
+        onclick="applyFacility()"
+      >
+        Submit application
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================= -->
+
+<script>
+
+  let currentTrade = "buy";
+  let balanceVisible = true;
+
+  const user = {
+    firstName: "John",
+    lastName: "Doe",
+    email: "john@example.com"
+  };
+
+
+  /* ============================================================
+     AUTH
+  ============================================================ */
+
+  function showRegister() {
+
+    document.getElementById("loginForm").classList.add("hidden");
+
+    document
+      .getElementById("registerForm")
+      .classList.remove("hidden");
+
+  }
+
+
+  function showLogin() {
+
+    document
+      .getElementById("registerForm")
+      .classList.add("hidden");
+
+    document
+      .getElementById("loginForm")
+      .classList.remove("hidden");
+
+  }
+
+
+  function login() {
+
+    const email =
+      document.getElementById("loginEmail").value;
+
+    if (!email) {
+      alert("Please enter your email.");
+      return;
+    }
+
+    user.email = email;
+
+    enterApp();
+
+  }
+
+
+  function completeRegistration() {
+
+    const first =
+      document.getElementById("firstName").value || "John";
+
+    const last =
+      document.getElementById("lastName").value || "Doe";
+
+    const email =
+      document.getElementById("registerEmail").value ||
+      "john@example.com";
+
+    user.firstName = first;
+    user.lastName = last;
+    user.email = email;
+
+    enterApp();
+
+  }
+
+
+  function enterApp() {
+
+    document
+      .getElementById("authScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("app")
+      .classList.remove("hidden");
+
+    updateUserUI();
+
+  }
+
+
+  function logout() {
+
+    document
+      .getElementById("app")
+      .classList.add("hidden");
+
+    document
+      .getElementById("authScreen")
+      .classList.remove("hidden");
+
+    showLogin();
+
+  }
+
+
+  function updateUserUI() {
+
+    const fullName =
+      `${user.firstName} ${user.lastName}`;
+
+    const initials =
+      `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`;
+
+    document.getElementById("welcomeName").textContent =
+      user.firstName;
+
+    document.getElementById("sidebarName").textContent =
+      fullName;
+
+    document.getElementById("sidebarEmail").textContent =
+      user.email;
+
+    document.getElementById("topName").textContent =
+      fullName;
+
+    document.getElementById("sidebarAvatar").textContent =
+      initials;
+
+    document.getElementById("topAvatar").textContent =
+      initials;
+
+  }
+
+
+  /* ============================================================
+     ONBOARDING
+  ============================================================ */
+
+  function nextOnboardingStep(step) {
+
+    document
+      .querySelectorAll(".onboarding-step")
+      .forEach(el => el.classList.remove("active"));
+
+    document
+      .getElementById(`onboardingStep${step}`)
+      .classList.add("active");
+
+
+    for (let i = 1; i <= 3; i++) {
+
+      const indicator =
+        document.getElementById(`stepIndicator${i}`);
+
+      indicator.classList.remove(
+        "active",
+        "completed"
+      );
+
+      if (i < step) {
+        indicator.classList.add("completed");
+      }
+
+      if (i === step) {
+        indicator.classList.add("active");
+      }
+
+    }
+
+  }
+
+
+  /* ============================================================
+     NAVIGATION
+  ============================================================ */
+
+  function navigate(page) {
+
+    document
+      .querySelectorAll(".page")
+      .forEach(el => el.classList.remove("active"));
+
+    const target =
+      document.getElementById(`page-${page}`);
+
+    if (target) {
+      target.classList.add("active");
+    }
+
+
+    document
+      .querySelectorAll(".nav-item")
+      .forEach(item => {
+
+        item.classList.toggle(
+          "active",
+          item.dataset.page === page
+        );
+
+      });
+
+
+    const titles = {
+      dashboard: "Dashboard",
+      transactions: "Transactions",
+      assets: "Digital Assets",
+      facility: "Facility",
+      bank: "NGN Account",
+      payments: "Payments",
+      profile: "Profile",
+      settings: "Settings"
+    };
+
+    document.getElementById("pageTitle").textContent =
+      titles[page] || "Dashboard";
+
+
+    if (window.innerWidth <= 800) {
+      document
+        .getElementById("sidebar")
+        .classList.remove("open");
+    }
+
+  }
+
+
+  function toggleSidebar() {
+
+    document
+      .getElementById("sidebar")
+      .classList.toggle("open");
+
+  }
+
+
+  /* ============================================================
+     BALANCE
+  ============================================================ */
+
+  function toggleBalance() {
+
+    balanceVisible = !balanceVisible;
+
+    document.getElementById("mainBalance").textContent =
+      balanceVisible
+        ? "₦1,250,000.00"
+        : "₦••••••••";
+
+  }
+
+
+  /* ============================================================
+     MODALS
+  ============================================================ */
+
+  function openModal(id) {
+
+    document
+      .getElementById(id)
+      .classList.remove("hidden");
+
+  }
+
+
+  function closeModal(id) {
+
+    document
+      .getElementById(id)
+      .classList.add("hidden");
+
+  }
+
+
+  /* ============================================================
+     BUY / SELL / CONVERT
+  ============================================================ */
+
+  function openTrade(type) {
+
+    currentTrade = type;
+
+    const title =
+      document.getElementById("tradeTitle");
+
+    const label =
+      document.getElementById("tradeAmountLabel");
+
+    if (type === "buy") {
+
+      title.textContent =
+        "Buy Digital Asset";
+
+      label.textContent =
+        "NGN Amount";
+
+    }
+
+    if (type === "sell") {
+
+      title.textContent =
+        "Sell Digital Asset";
+
+      label.textContent =
+        "Asset Quantity";
+
+    }
+
+    if (type === "convert") {
+
+      title.textContent =
+        "Convert Digital Asset";
+
+      label.textContent =
+        "Amount";
+
+    }
+
+    updateQuote();
+
+    openModal("tradeModal");
+
+  }
+
+
+  function updateQuote() {
+
+    const asset =
+      document.getElementById("tradeAsset").value;
+
+    const amount =
+      Number(
+        document.getElementById("tradeAmount").value
+      ) || 0;
+
+    const prices = {
+      BTC: 100000000,
+      ETH: 7000000,
+      USDT: 1500
+    };
+
+    const price = prices[asset];
+
+    let quantity;
+
+    if (currentTrade === "sell") {
+      quantity = amount;
+    } else {
+      quantity = amount / price;
+    }
+
+    const fee =
+      currentTrade === "sell"
+        ? amount * 0.01 * price
+        : amount * 0.01;
+
+    const total =
+      currentTrade === "sell"
+        ? amount * price - fee
+        : amount + fee;
+
+
+    document.getElementById("quotePrice").textContent =
+      `₦${price.toLocaleString()}`;
+
+    document.getElementById("quoteQuantity").textContent =
+      `${quantity.toFixed(6)} ${asset}`;
+
+    document.getElementById("quoteFee").textContent =
+      `₦${Math.round(fee).toLocaleString()}`;
+
+    document.getElementById("quoteTotal").textContent =
+      `₦${Math.round(total).toLocaleString()}`;
+
+  }
+
+
+  function executeTrade() {
+
+    closeModal("tradeModal");
+
+    setTimeout(() => {
+
+      alert(
+        `Demo transaction successful!\n\n` +
+        `Type: ${currentTrade.toUpperCase()}\n` +
+        `Reference: PP-20260904-${Math.floor(Math.random() * 999999)}`
+      );
+
+    }, 100);
+
+  }
+
+
+  /* ============================================================
+     FACILITY
+  ============================================================ */
+
+  function applyFacility() {
+
+    closeModal("facilityModal");
+
+    setTimeout(() => {
+
+      alert(
+        "Facility application submitted successfully.\n\n" +
+        "Reference: PP-FAC-" +
+        Math.floor(Math.random() * 999999)
+      );
+
+    }, 100);
+
+  }
+
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+
+  function togglePassword(id) {
+
+    const input =
+      document.getElementById(id);
+
+    input.type =
+      input.type === "password"
+        ? "text"
+        : "password";
+
+  }
+
+
+  function copyAccount() {
+
+    navigator.clipboard
+      .writeText("0123456789")
+      .then(() => {
+
+        alert(
+          "Account number copied: 0123456789"
+        );
+
+      });
+
+  }
+
+
+  /* Close modal when clicking outside */
+
+  document
+    .querySelectorAll(".modal-overlay")
+    .forEach(overlay => {
+
+      overlay.addEventListener("click", function(e) {
+
+        if (e.target === overlay) {
+          overlay.classList.add("hidden");
+        }
+
+      });
+
+    });
+
+</script>
+
+</body>
+</html>

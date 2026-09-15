@@ -1,0 +1,237 @@
+/* Shared ParatusPay form primitives — import once (e.g. in main.ts):
+   import '@/assets/styles/forms.css'
+   Palette: navy #0A0F2C / #16204F, gold #DCB35C -> #A97D2F */
+
+.step-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a97d2f;
+  margin: 0 0 6px;
+}
+
+.step-title {
+  font-size: 19px;
+  font-weight: 700;
+  color: #101538;
+  margin: 0 0 4px;
+}
+
+.step-subtitle {
+  font-size: 13px;
+  color: #565c80;
+  margin: 0 0 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.field__label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #16204f;
+}
+
+.field__hint {
+  font-size: 12px;
+  color: #8a90b3;
+}
+
+.field__hint--error {
+  color: #b3261e;
+}
+
+.field__input-wrap {
+  position: relative;
+}
+
+.field__input {
+  width: 100%;
+  border: 1px solid #d9dced;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: #101538;
+  background: #fbfbfe;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field__input:focus {
+  border-color: #c59a47;
+  box-shadow: 0 0 0 3px rgba(197, 154, 71, 0.18);
+}
+
+.field__input--error {
+  border-color: #e0817c;
+}
+
+.field__toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #8a90b3;
+  cursor: pointer;
+}
+
+.auth-alert {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fdecec;
+  color: #b3261e;
+  border: 1px solid #f6c6c4;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  margin-bottom: 16px;
+}
+
+.auth-alert--success {
+  background: #eaf7ee;
+  color: #1e7a3c;
+  border-color: #bfe6cb;
+}
+
+.btn-primary {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 13px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #16204f;
+  background: linear-gradient(120deg, #dcb35c 0%, #c59a47 55%, #a97d2f 100%);
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.05s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.05);
+}
+
+.btn-primary:active {
+  transform: translateY(1px);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  width: 100%;
+  border: 1px solid #d9dced;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #16204f;
+  background: #fff;
+  cursor: pointer;
+}
+
+.btn-link {
+  border: none;
+  background: none;
+  color: #a97d2f;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.step-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.otp-inputs {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.otp-inputs input {
+  width: 44px;
+  height: 52px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  border: 1px solid #d9dced;
+  border-radius: 10px;
+  color: #101538;
+  background: #fbfbfe;
+}
+
+.otp-inputs input:focus {
+  outline: none;
+  border-color: #c59a47;
+  box-shadow: 0 0 0 3px rgba(197, 154, 71, 0.18);
+}
+
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #e6e8f2;
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.status-row__label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #101538;
+}
+
+.status-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.status-badge--pending {
+  background: #fdf3e3;
+  color: #a97d2f;
+}
+
+.status-badge--verified {
+  background: #eaf7ee;
+  color: #1e7a3c;
+}
+
+.status-badge--failed {
+  background: #fdecec;
+  color: #b3261e;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
