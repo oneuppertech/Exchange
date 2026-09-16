@@ -9,41 +9,78 @@
         </p>
       </div>
 
-      <!-- Compact Date Picker (Top Right) -->
-      <div class="date-picker-compact">
-        <v-card flat border>
-          <v-card-text class="pa-2">
-            <div class="d-flex align-center gap-6">
-              <span class="text-caption font-weight-bold">Date:</span>
-              <v-menu>
-                <template v-slot:activator="{ props }">
-                  <v-btn
-                    v-bind="props"
-                    :text="formatDate(selectedDate)"
-                    size="small"
-                    variant="outlined"
-                    color="#DC2626"
-                  ></v-btn>
-                </template>
-                <v-date-picker
-                  color="red"
-                  v-model="selectedDate"
-                  @update:model-value="fetchRatesByDate"
-                ></v-date-picker>
-              </v-menu>
+   
+<div class="header-actions">
+ 
+
+  <!-- Date Picker -->
+  <div class="date-picker-compact">
+    <v-card flat border>
+      <v-card-text class="pa-2">
+        <div class="d-flex align-center gap-6">
+          <span class="text-caption font-weight-bold">
+            Date:
+          </span>
+
+          <v-menu>
+            <template v-slot:activator="{ props }">
               <v-btn
-                size="x-small"
-                variant="tonal"
+                v-bind="props"
+                :text="formatDate(selectedDate)"
+                size="small"
+                variant="outlined"
                 color="#DC2626"
-                @click="setToday"
-                class="text-lowercase"
-              >
-                today
-              </v-btn>
-            </div>
-          </v-card-text>
-        </v-card>
+              />
+            </template>
+
+            <v-date-picker
+              color="red"
+              v-model="selectedDate"
+              @update:model-value="fetchRatesByDate"
+            />
+          </v-menu>
+
+          <v-btn
+            size="x-small"
+            variant="tonal"
+            color="#DC2626"
+            @click="setToday"
+            class="text-lowercase"
+          >
+            today
+          </v-btn>
+        </div>
+      </v-card-text>
+    </v-card>
+  </div>
+
+   <!-- Profile -->
+  <div class="profile-section">
+     <div class="profile-info">
+      <div class="profile-name">
+        {{ profileName }}
       </div>
+
+      <div class="profile-email">
+        {{ profileEmail }}
+      </div>
+    </div>
+
+   <v-btn
+  variant="text"
+  color="error"
+  size="small"
+  prepend-icon="mdi-logout"
+  @click="handleLogout"
+>
+  Logout
+</v-btn>
+    
+   
+  </div>
+</div>
+
+
     </div>
 
     <!-- Tabs -->
@@ -623,13 +660,13 @@
 
             <v-col cols="12" sm="6">
               <v-text-field
-  v-model.number="rateForm.rate"
-  label="Rate *"
-  type="number"
-  step="0.01"
-  min="0"
-  variant="outlined"
-></v-text-field>
+                v-model.number="rateForm.rate"
+                label="Rate *"
+                type="number"
+                step="0.01"
+                min="0"
+                variant="outlined"
+              ></v-text-field>
             </v-col>
 
             <v-col cols="12" sm="6">
@@ -830,7 +867,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useExchangeRates } from '@/composables/Useexchangerate.ts'
+import { useAuthStore } from '@/stores/auth'
+const authStore = useAuthStore()
 
+const profileName = computed(() => authStore.profile?.full_name || 'User') 
+const profileEmail = computed(() => authStore.profile?.email || authStore.user?.email || '')
+const handleLogout = async () => { 
+  await authStore.logout() 
+  window.location.href = '/' }
 const {
   rates,
   counterparties,
@@ -994,7 +1038,7 @@ const saveRate = async () => {
     await fetchRatesByDate()
     closeRateForm()
   } catch (err) {
-    console.error('Error saving rate:', err)
+    console.log('Error saving rate:', err)
   }
 }
 
@@ -1191,6 +1235,96 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
+.header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.profile-section {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+
+  background: #fff;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+}
+
+.profile-info {
+  min-width: 0;
+  max-width: 180px;
+}
+
+.profile-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #111827;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.profile-email {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.date-picker-compact {
+  flex-shrink: 0;
+  min-width: 300px;
+
+  .v-card {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+}
+
+@media (max-width: 900px) {
+  .header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 600px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .profile-section {
+    width: 100%;
+  }
+
+  .profile-info {
+    flex: 1;
+    max-width: none;
+  }
+
+  .date-picker-compact {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .date-picker-compact .v-card {
+    width: 100%;
+  }
+
+  .date-picker-compact .v-card-text > div {
+    flex-wrap: wrap;
+  }
+}
+
+
 .exchange-rate-container {
   padding: 1.5rem;
   max-width: 1400px;
